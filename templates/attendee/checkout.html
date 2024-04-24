@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Event Booking</title>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+    <style>
+      /* navbar */
+      .nav {
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0; 
+          background: #fff1f1;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: space-between; /* Align items to the edges */
+          align-items: center; 
+          z-index: 2;
+      }
+      .logo {
+          color: rgb(89, 6, 6);
+          font-size: 30px;
+          text-decoration: none;
+          font-family: 'Audiowide';
+          margin-left: 20px; 
+      }
+      .checkout {
+          text-align: center; 
+          margin: 0 auto;
+          margin-left: 36%; 
+      }
+
+      /* end of navbar */
+
+      /* body */
+
+      body {
+      padding-top: 50px;
+    }
+    .product-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-details {
+      flex: 1;
+    }
+    .quantity-controls {
+          display: flex;
+          align-items: center;
+      }
+      .rounded-input {
+          border: 2px solid white;
+          padding: 8px 12px;
+          font-size: 17px;
+          border-radius: 50%;
+          width: 35px;
+          text-align: center;
+      }
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0; 
+      }
+      .quantity-btn {
+          background-color: white;
+          border: 2px solid black;
+          color :black;
+          padding: 14px; 
+          font-size: 20px;
+          border-radius: 50%; 
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      .details{
+        list-style-type: none;
+        padding: 0;
+      }
+      .details li{
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+      .pricedetails p{
+        font-size: 20px;
+      }
+      .total{
+        align-items: center;
+      margin-bottom: 26px;
+      box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.1);
+
+      }
+      .totalprice p{
+        font-size: 20px;
+      }
+      body{
+        background-color: rgb(243, 246, 246);
+      }
+    /* end of body */
+    </style>
+</head>
+<body>
+  <!-- navbar -->
+    <div class="container-fluid nav custom-navbar">
+      <a href="{% url 'homepage' %}" style="text-decoration: none;">
+        <p class="logo">EHSAAS</p></a>
+        <h4 class="checkout">Check Out</h4>
+    </div>
+
+    <!-- end of navbar -->
+
+
+    <!-- body -->
+    <br><br><br>
+  <div class="container ">
+    <div class="row gx-5">
+      <div class="col-md-7 ">
+        <div class="product-container bg-white">
+          <div class="product-details mt-4 ms-5">
+              <h4>{{ event.event_title }}</h4>
+              <ul class="details">
+                <li><i class="fa fa-map-marker"></i>&nbsp;&nbsp;{{ event.venue }}</li>
+                <li><i class="fa fa-calendar"></i>&nbsp;&nbsp;{{ event.event_start_date }}{% if event.event_end_date %} - {{ event.event_end_date }}{% endif %}</li>
+                <li><i class="fa fa-clock-o"></i>&nbsp;&nbsp;{{ event.event_start_time|date:"h:i A"|upper }} {% if event.event_end_time %}- {{ event.event_end_time|date:"h:i A"|upper }}{% endif %}</li>
+                <li><i class="fa fa-ticket"></i>&nbsp;&nbsp;{{ ticket_type }}</li>
+                <li><i class="fa fa-inr"></i>&nbsp;&nbsp;{{ ticket_price }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="container total bg-white"> <br>
+        <div class="card ">
+          <div class="card-body ">   
+               <form method="POST">
+                {% csrf_token %}
+            <h4 class="card-title">{{event.event_title}}</h4>
+            <div class="pricedetails">
+              
+              <p>{{ticket_type |upper}} : {{ ticket_quantity }} {% if ticket_quantity == '1' %}Ticket{% else %}Tickets{% endif %}</p>
+              <p>Ticket Price : <i class="fa fa-inr"></i>&nbsp;{{ticket_price}}</p></div>
+          </div>
+        </div><br>
+        
+        <div class="row totalprice">
+          <div class="col-md-6">
+              <p>Sub Total </p>
+          </div>
+          <div class="col-md-6 text-end ">
+              <p> <i class="fa fa-inr"></i>&nbsp;{{ total_price }}</p>
+          </div>
+      </div>
+      <div class="row totalprice">
+        <div class="col-md-6">
+            <p>Booking Fee </p>
+        </div>
+        <div class="col-md-6 text-end ">
+            <p><i class="fa fa-inr"></i>&nbsp;140</p>
+        </div><hr>
+    </div>
+    <div class="row totalprice">
+      <div class="col-md-6">
+          <p>Total Amount</p>
+      </div>
+      <div class="col-md-6 text-end ">
+          <p> <i class="fa fa-inr"></i>&nbsp;{{ total_amount }}</p>
+      </div>
+      <hr>
+  </div>
+  <div class="row">
+  <button type="submit" class="btn btn-danger">Proceed to Pay</button></div><br>
+
+      </div></form>
+    </div>
+  </div>
+
+  </div>
+
+  <!-- end of body -->
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+</body>
+</html>

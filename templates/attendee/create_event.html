@@ -1,0 +1,390 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"  href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>createevents</title>
+    <style>
+
+/* navbar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  
+  .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index:3;
+      top: 0;
+      right: 0;
+      background-color: #6c0202;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+  
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+  
+    .sidenav a:hover {
+      color: #e4bf2d;
+    }
+  
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+  
+    .nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      background: #540202;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      z-index: 2;
+    }
+  
+    .logo {
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+      font-family:'Audiowide';
+    }
+  
+    .nav span:hover {
+      color: #ccc;
+    }
+  
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: auto;
+      margin-left: auto;
+  
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+  
+    .search {
+      border: 0;
+    }
+  
+    .area {
+      border: none;
+      box-shadow: none;
+      border-color: none;
+      outline: none;
+    }
+/* end of navbar */
+.text-center{
+  color: #540202;
+}
+.createbg{
+  overflow: hidden;
+}
+
+.about{
+
+  background-color: rgb(236, 206, 208);
+}
+
+
+.icon_heading{
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color:rgb(220, 215, 116);
+  line-height: 2.5;
+}
+
+/* footer */
+    
+  .footer{
+    background-color: #540202;
+
+  }
+  .footer-heading{
+    color: white;
+  }
+.footer a {
+    text-decoration: none;
+    color: whitesmoke;
+  }
+  .list-unstyled li {
+    margin-bottom: 7px;
+}
+
+/* end of footer */
+
+    </style>
+</head>
+<body>
+  <!--navbar-->
+
+<div id="mySidenav" class="sidenav">
+    <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(255, 255, 255, 0.895);" onclick="closeNav()"></i>
+   
+  {% if 'user' not in request.session %}
+  <a href="{% url 'create_event' %}">Create Events</a>
+  {% endif %}
+  <a href="{% url 'browse' %}">Browse Events</a>
+
+  {% if 'user' in request.session %}
+  <a href="{% url 'mybookings' %}">Bookings</a>
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+
+  {% elif 'organiser' in request.session %}
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'your_events' %}">Your Events</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+  {% else %}
+  <a href="{% url 'signup' %}">Signup</a>
+  <a href="{% url 'login_page' %}">Login</a>
+  {% endif %}
+  </div>
+  
+  <div class="container-fluid nav  custom-navbar">
+    <div class="logo ms-4 mt-3">
+      <a href="{% url 'homepage' %}" style="text-decoration: none;">
+        <p class="logo">EHSAAS</p></a>
+    </div>
+    <div class="search-container  pe-3">
+      <a href="{% url 'search' %}"><i class="fa fa-search fa-2x" style="color: white;"  ></i></a>
+    </div>
+    <div>
+      <i class="fa fa-bars fa-2x pe-4" style="color: white;" onclick="openNav()"></i>
+    </div>
+  </div>
+  
+  <!--end of navbar-->
+
+
+  <div class="container-fluid  mt-5 createbg">
+    <br><br> <br><br>
+    <!-- <div class="circleTop"></div> -->
+    <h2 class="text-center  mb-4">Event Growth Starts Here</h2>
+    <p class="text-center">The trusted all-in-one ticketing and discovery platform for millions of organizers and attendees worldwide.</p>
+    <div class="text-center">
+      <a href="{% url 'create' %}" class="btn btn-danger">Create Your Event</a>
+    </div>
+
+  </div>
+  <br><br>
+    
+  <div id="homepagebg" class="carousel slide mt-3" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{%  static 'images/carousel1.jpg' %}" class="d-block w-100 h-50" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="{%  static 'images/carousel2.jpg' %}" class="d-block w-100 " alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="{%  static 'images/carousel3.jpg' %}" class="d-block w-100 "  alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#homepagebg" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homepagebg" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+  
+  <div class="container-fluid  about"><br>
+    <h2 class="text-center mb-4">Create Amazing Events with Ehsaas </h2>
+    <p class="text-center mb-2" style="font-weight: 600;">Create, Manage, and Impress with Ease</p>
+
+    <div class="row text-center mt-5 organizer_features">
+        <div class="col-md-3">
+            <i class="fa fa-ticket fa-3x"></i>
+            <span class="icon-text icon_heading">Event Ticketing</span><br>
+            <span class="icon-description ">Amplify earnings with customizable event pages and a secure, hassle-free attendee checkout.</span>
+        </div>
+
+        <div class="col-md-3">
+            <i class="fa fa-calendar fa-3x"></i>
+            <span class="icon-text icon_heading" >Event Scheduling</span><br>
+            <span class="icon-description">Efficiently plan and organize events with our user-friendly scheduling tools.</span>
+        </div>
+
+        <div class="col-md-3">
+            <i class="fa fa-solid fa-user fa-3x"></i>
+            <span class="icon-text icon_heading">Attendee Management</span><br>
+            <span class="icon-description">Effortlessly manage and engage with event attendees using our intuitive tools.</span>
+        </div>
+
+        <div class="col-md-3">
+            <i class="fa fa-cogs fa-3x"></i>
+            <span class="icon-text icon_heading">Customization</span><br>
+            <span class="icon-description">Tailor your event experience with customizable features and branding options.</span>
+        </div>
+        </div>
+        <br><br>
+    </div>
+</div>
+
+<div class="container-fluid">
+  <br><br>
+  <div class="text-center section-heading">
+    <h2 class="text-center heading mb-4 ">Expand Your Reach</h2>
+    <p class="text-center headtag mb-2" style="font-weight: 600;">Establish and grow your community on a vibrant marketplace where millions seek enjoyable experiences.</p>
+  </div>
+
+</div>
+<div class="container-fluid audience">
+  <div class="row">
+    <!-- Image Column -->
+  
+    <div class="col-md-6 ">
+      <br><br><br> 
+  
+      <div class="image-section mt-5">
+        <img src="{%  static 'images/createbg.png' %}" alt="Event Image" class="img-fluid" style="max-width: 100%;">
+       
+      </div>
+    </div>
+
+    <div class="col-md-6 mt-4">
+
+          <div class="container-fluid audience"><br>
+             
+              <div class="row text-center audience_features">
+                  <div class="col-md-12">
+                      <div>
+                          <i style="color: black;" class="fa fa-star fa-2x"></i>
+                          &nbsp; &nbsp;<span class="icon-text icon_heading">Attendee Discovery</span><br>
+                          <span class=" icon-description "><span>Discover new attendees who share</span><br><span> similar interests and enhance </span><br>networking opportunities.</span>
+                      </div>
+                      <br>
+                  </div>
+                  
+                  <div class="col-md-12">
+                      <div>
+                          <i style="color: black;" class="fa fa-bullhorn fa-2x"></i>
+                          &nbsp; &nbsp;<span class="icon-text icon_heading">Ehsaas Ads</span><br>
+                          <span class="icon-description"><span>Promote your event across Ehsaas and </span><br>get 14x more visibility on our homepage,<span><br> related events, search results, and more.</span>
+                      </div>
+                      <br>
+                  </div>
+                  <div class="col-md-12">
+                      <div>
+                          <i style="color: black;" class="fa fa-bullseye fa-2x"></i>
+                          &nbsp; &nbsp;<span class="icon-text icon_heading">Marketing Tools</span><br>
+                          <span class="icon-description"><span>Engage attendees and reach new ones </span><br><span>with our suite of automated email </span><br>and social marketing tools.</span>
+                      </div>
+                      <br>
+                  </div>
+                  <div class="col-md-12">
+                      <div>
+                        <span> <i style="color: black;" class="fa fa-globe fa-2x"></i>
+                          &nbsp; &nbsp;<span class="icon-text icon_heading">Global Reach</span><br>
+                          <span class="icon-description"><span>Reach a global audience and extend the</span><br><span> impact of your event beyond </span><br>geographical boundaries.</span>
+                      </div>
+                      <br>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- Footer Section -->
+<footer class="footer ">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-unstyled ggg mt-5">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Create Events</a></li>
+                    <li><a href="#">Find Events</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3" style="color: white;">
+              <ul class="list-unstyled mt-5">
+                
+                <li><a href="#"> Terms & Cnditions</a></li>
+                <li><a href="#">Privacy Policy </a></li>
+                <li><a href="">Customer Support</a></li>
+                <li><a href="#">FAQ</a></li>
+              </ul>
+          </div>
+            <div class="col-md-3" style="color: white;">
+                <ul class="list-unstyled mt-5 ">
+                  <li>Contact Us</li>
+                  <li><a href="mailto:shamelashahnas@gmail.com?subject=Regarding%20Your%20Event">ehsaas@gmail.com</a></li>
+                  <li><a href="tel:9526011865">9526011865</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3" style="color: white;">
+              <ul class="list-unstyled mt-5 ">
+                <li>Connect With Us</li>
+                <a href="https://wa.me/15551234567" style="margin-right: 12px;">
+                  <i class=" fa fab fa-whatsapp fa-lg "></i> </a>         
+                <a href="#" style="margin-right: 12px; ;"><i class="fa fab fa-facebook-f fa-lg"></i></a>
+                <a href="#" style="margin-right: 12px;"><i class=" fa fab fa-twitter fa-lg"></i></a>
+                <a href="https://www.instagram.com/sh_e_mi__"  target="_blank">
+                  <i class="fa fab fa-instagram fa-lg"></i> </a>
+               
+              </ul>
+          </div>
+  
+        </div>
+        <hr>
+        <div class="row" style="color: whitesmoke">
+            <div class="col-md-12 text-center">
+                <p>&copy; 2024 Ehsaas. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+  </footer>
+
+<script>
+
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    }
+    
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    
+    
+    </script>
+
+
+
+</body>
+</html>
+

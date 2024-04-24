@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <title>Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+  body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('{% static "images/signup.png" %}');
+    background-position-x: 19%;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+.logo {
+      color: rgb(90, 5, 5);
+      font-size: 40px;
+      text-decoration: none;
+      font-family:'Audiowide';
+}
+
+.form-2-wrapper {
+    background: #ff000029;
+    padding: 60px;
+    border-radius: 8px;
+}
+input.form-control{
+    padding: 16px;
+    border: none;
+    border: 2px solid #405c7cb8;
+    border-radius: 30px;
+    background-color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+   
+   
+}
+input.form-control:focus{
+    box-shadow: none !important;
+    outline: 0px !important;
+    background-color: transparent;
+}
+button.login-btn{
+    background: #940404;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+}
+.register-test a{
+    color: #000;
+}
+.social-login button{
+    border-radius: 30px;
+}
+.form-check-input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #405c7cb8;
+            background-color: rgba(231, 37, 37, 0.057);
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            margin-right: 10px;
+
+        }
+        .form-check-input[type="radio"]:checked {
+            background-color: #940404;
+            border-color: #940404;
+        }
+        .form-check-input[type="radio"]:checked::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 4px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .form-check-input[type="radio"]:hover {
+            background-color: #940404;
+            border-color: #940404;
+        }
+        .form-check-input[type="radio"]:hover::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 4px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .form-check-label{
+            font-size: 22px;
+        }
+
+    </style>
+</head>
+<body>
+  
+<div class="container">
+  <div class="row">
+    <!-- Left Blank Side -->
+    <div class="col-lg-4"></div>
+
+    <!-- Right Side Form -->
+    <div class="col-lg-8 d-flex align-items-center justify-content-center right-side">
+      <div class="form-2-wrapper">
+        <div class="logo text-center">
+          <p class="logo ">Ehsaas</p>
+        </div>
+        <h4 class="text-center mb-4">Sign Up</h4>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="user_type" id="organiser" value="organiser">
+                    <label class="form-check-label" for="organiser">Organiser</label>
+                </div>
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="user_type" id="attendee" value="attendee">
+                    <label class="form-check-label" for="attendee">Attendee</label>
+                </div>
+            </div>
+          <div class="mb-3 form-box">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" required>
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+          </div>
+
+         
+          <button type="submit" class="btn btn-outline-secondary login-btn w-100 mb-3">Sign Up</button>
+         
+        </form>
+
+        <!-- Register Link -->
+        <p class="text-center register-test mt-3">Already have an account? <a href="register-3.html" class="text-decoration-none">Sign In here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

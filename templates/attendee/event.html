@@ -1,0 +1,185 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/event_style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    
+<!--navbar-->
+
+<div id="mySidenav" class="sidenav">
+    <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(255, 255, 255, 0.895);" onclick="closeNav()"></i>
+    
+  {% if 'user' not in request.session %}
+  <a href="{% url 'create_event' %}">Create Events</a>
+  {% endif %}
+  <a href="{% url 'browse' %}">Browse Events</a>
+
+  {% if 'user' in request.session %}
+  <a href="{% url 'mybookings' %}">Bookings</a>
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+
+  {% elif 'organiser' in request.session %}
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'your_events' %}">Your Events</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+  {% else %}
+  <a href="{% url 'signup' %}">Signup</a>
+  <a href="{% url 'login_page' %}">Login</a>
+  {% endif %}
+  </div>
+  
+  <div class="container-fluid nav  custom-navbar">
+    <div class="logo ms-4 mt-3">
+      <a href="{% url 'homepage' %}" style="text-decoration: none;">
+        <p class="logo">EHSAAS</p></a>
+    </div>
+    <div class="search-container  pe-3">
+      <a><i class="fa fa-search fa-2x" style="color: white;"  ></i></a>
+    </div>
+    <div>
+      <i class="fa fa-bars fa-2x pe-4" style="color: white;" onclick="openNav()"></i>
+    </div>
+  </div>
+  
+  <!--end of navbar-->
+<br><br><br>
+
+<div class="event-container title">
+    <img class="event-image" style="height: 450px;" src="{{ event_images.event_image.url }}" alt="Event Image">
+    <div class="event-details">
+        <h2>{{event.event_title}}</h2>      
+        <p>{{event.event_type_id.event_type }}</p>
+        <p>| {{event.event_start_date}} | INR {{event.ticket_price}} Onwards | {{event.venue}} | </p>
+
+   
+    </div>
+    
+    </div>
+    <div class="event-container details">
+        <br>
+        <div class="about">
+            <p style="font-weight: 600; font-size: 22px; color: black;">About</p>
+            <p>{{event.event_description}}</p>
+        </div>
+        <div class="tags">
+          <h5>Tags</h5>
+          <ul>{% for tag in tags %}
+            <li class="tags-item inline ">
+              <a href="{% url 'search' %}?query={{ tag.event_tag }}" class="tags-link ">{{tag.event_tag}}</a> 
+            </li>
+            
+           {% endfor %}
+          </ul>
+        </div>
+      
+        <br>
+    </div>
+      
+    <div class="event-container loc ">
+        <br>
+        <div class="date_details">
+            <p style="font-size: 20px; font-weight: 600; color: black;">Date & Time</p>
+            <p style="color: black;"><i class="fa fa-calendar" aria-hidden="true"></i>&nbsp; {{event.event_start_date}}{% if event.event_end_date %} - {{ event.event_end_date }}{% endif %}</p>
+              <p style="color:black;"><i class="fa fa-clock-o"></i> {{event.event_start_time|date:"h:i A"|upper}} {% if event.event_end_time %}- {{event.event_end_time|date:"h:i A"|upper}}{% endif %}</p>
+        
+            <p style="font-size: 20px; font-weight: 600; color: black;">Location</p>  
+            <p style="color: black;"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;{{event.venue}}</p>
+          </div>  
+        <div class="loc_details">
+         
+        </div>
+
+        <div class="booking-dates">
+            <p>Booking Starts: {{event.booking_start_date}}</p>
+            <p>Booking Ends: {{event.booking_end_date}}</p>
+        </div>
+
+       
+        
+        {% if event_status == 'ongoing' %}
+        <a href="{% url 'booking' event.event_id %}"><button class="book-now-button " style="margin-left: 25px;">Get Your Tickets</button> </a>
+        {% elif event_status == 'soldout' %}
+        <h4 class="bookingended  mt-3 mb-4 "style="color:red; margin-left:25px; font-weight:600;"> Sold Out </h5>
+        {% elif event_status == 'expired' %}
+        <h4 class="bookingended  mt-3 mb-4 "style="color:red; margin-left:25px; font-weight:600;"> Event Ended !</h4>
+        {% elif event_status == 'upcoming' %}
+        <h4 class="bookingended  mt-3 mb-4 "style="color:red; margin-left:25px; font-weight:600;"> Upcoming event... </h4>  
+        {% endif %}
+   <br>
+   <br></div>
+
+<!-- Footer Section -->
+<footer class="footer mt-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-3">
+              <ul class="list-unstyled ggg mt-5">
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Categories</a></li>
+                  <li><a href="#">Create Events</a></li>
+                  <li><a href="#">Find Events</a></li>
+              </ul>
+          </div>
+          <div class="col-md-3" style="color: white;">
+            <ul class="list-unstyled mt-5">
+              
+              <li><a href="#"> Terms & Cnditions</a></li>
+              <li><a href="#">Privacy Policy </a></li>
+              <li><a href="">Customer Support</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+          <div class="col-md-3" style="color: white;">
+              <ul class="list-unstyled mt-5 ">
+                <li>Contact Us</li>
+                <li><a href="mailto:shamelashahnas@gmail.com?subject=Regarding%20Your%20Event">ehsaas@gmail.com</a></li>
+                <li><a href="tel:9526011865">9526011865</a></li>
+              </ul>
+          </div>
+          <div class="col-md-3" style="color: white;">
+            <ul class="list-unstyled mt-5 ">
+              <li>Connect With Us</li>
+              <a href="https://wa.me/15551234567" style="margin-right: 12px;">
+                <i class=" fa fab fa-whatsapp fa-lg"></i> </a>         
+              <a href="#" style="margin-right: 12px;"><i class="fa fab fa-facebook-f fa-lg"></i></a>
+              <a href="#" style="margin-right: 12px;"><i class=" fa fab fa-twitter fa-lg"></i></a>
+              <a href="https://www.instagram.com/sh_e_mi__" target="_blank">
+                <i class="fa fab fa-instagram fa-lg"></i> </a>
+             
+            </ul>
+        </div>
+
+      </div>
+      <hr>
+      <div class="row" style="color: whitesmoke">
+          <div class="col-md-12 text-center">
+              <p>&copy; 2024 Ehsaas. All rights reserved.</p>
+          </div>
+      </div>
+  </div>
+</footer>
+
+<script>
+    
+
+    function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+</script>
+</body>
+</html>

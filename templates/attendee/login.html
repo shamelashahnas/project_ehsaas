@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="{% static 'js/login.js' %}"> </script>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>LoginForm</title>
+</head>
+
+<body>
+   
+    <div class="container">
+        <div class="circleTop"></div>
+        <div class="content">
+            <h2>Log In</h2>        
+            <div class="form-group">
+            <form name="myform" method="POST" action="" onsubmit="return validateform()" > 
+                {% csrf_token %}                 
+            <input type="text" class="form" name="user_data" id="" aria-describedby="helpId" placeholder="Username ">
+            </div>
+            <div class="form-group">    
+                <input type="password" class="form" name="password" id="" placeholder="Password">
+            </div>
+            <p><a href=""> Forgot Password?</a></p>
+            <button type="onsubmit">Login</button>
+            </form>
+        </div>
+        <div class="circleBottom"></div>
+    </div>
+     
+</body>
+
+</html>

@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Account</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+  <style>
+
+    /* navbar */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+
+  }
+  
+  
+.sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index:3;
+      top: 0;
+      right: 0;
+      background-color: #6c0202;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+}
+  
+.sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+}
+  
+.sidenav a:hover {
+      color: #e4bf2d;
+}
+  
+.sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+}
+  
+ .nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      background: #540202;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      z-index: 2;
+ }
+  
+.logo {
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+      font-family:'Audiowide';
+}
+  
+.nav span:hover {
+      color: #ccc;
+}
+  
+.search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: auto;
+      margin-left: auto;
+  
+      border-radius: 5px;
+      margin-right: 10px;
+ }
+  
+.search {
+      border: 0;
+ }
+  
+.area {
+      border: none;
+      box-shadow: none;
+      border-color: none;
+      outline: none;
+ }
+
+/* navbar end */
+
+ 
+.container{
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    width: 800px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #540202;  
+
+}
+
+.profile-button {
+    background: #540202;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #ab4040
+}
+
+.profile-button:focus {
+    background: #540202;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #540202;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #540202;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+    
+
+  </style>
+  </head>
+<body>
+
+    <!--navbar-->
+
+<div id="mySidenav" class="sidenav">
+    <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(255, 255, 255, 0.895);" onclick="closeNav()"></i>
+  
+  
+    
+   
+  {% if 'user' not in request.session %}
+  <a href="{% url 'create_event' %}">Create Events</a>
+  {% endif %}
+  <a href="{% url 'browse' %}">Browse Events</a>
+
+  {% if 'user' in request.session %}
+  <a href="{% url 'mybookings' %}">Bookings</a>
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+
+  {% elif 'organiser' in request.session %}
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'your_events' %}">Your Events</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+  {% else %}
+  <a href="{% url 'signup' %}">Signup</a>
+  <a href="{% url 'login_page' %}">Login</a>
+  {% endif %}
+       
+   
+  </div>
+  
+  <div class="container-fluid nav  custom-navbar">
+    <div class="logo ms-4 mt-3">
+        <a href="{% url 'homepage' %}" style="text-decoration: none;">
+            <p class="logo">EHSAAS</p></a>
+    </div>
+    <div class="search-container  pe-3">
+      <a href="{% url 'search' %}"><i class="fa fa-search fa-2x" style="color: white;"  ></i></a>
+    </div>
+    <div>
+      <i class="fa fa-bars fa-2x pe-4" style="color: white;" onclick="openNav()"></i>
+    </div>
+  </div>
+  <br><br>
+  
+  <!--end of navbar-->
+
+    <div class="container rounded  mt-5 mb-5">
+        <form method="POST"  enctype="multipart/form-data">
+            {% csrf_token %}  
+        <div class="row">
+            <div class="col-md-5 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    
+                        {% if 'user' in request.session %}
+                        <input type="file" id="profile-image" name ="image" accept="image/*" style="display: none;">
+                        <label for="profile-image">
+                        <img id="preview-image" class="rounded-circle mt-5" width="150px" src="{% static 'images/adas.jpg' %}" alt="no profile">
+                        </label>
+                        {% else %}
+                        <input type="file" id="profile-image" name="image" accept="image/*" style="display: none;">
+                        <label for="profile-image">
+                        <img id="preview-image" class="rounded-circle mt-5" width="150px" src="{{user.organiser_image.url}}">
+                        </label>
+                        {% endif %}
+                    
+                </div>
+            </div>
+            <div class="col-md-7 border-right">
+
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3 mt-0">
+                        <h4 class="text-right ">Profile Settings</h4>
+                    </div>
+                  {% if 'user' in request.session %}
+                    <div class="row mt-2">
+                        <div class="col-md-12"><input type="text" name="name" class="form-control" placeholder="Enter name" value="{{user.attendee_name}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="text" name="phone" class="form-control" placeholder="enter phone number" value="{{user.attendee_phone}}"></div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="email" name="email" class="form-control" placeholder="enter email id" value="{{user.attendee_email}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="text" name="username" class="form-control" placeholder="Enter username" value="{{user.attendee_username}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="password" name="password" class="form-control" placeholder="Enter password" value="{{user.attendee_password}}"></div>
+                    </div>
+                    {% else %}
+                    <div class="row mt-2">
+                        <div class="col-md-12"><input type="text" name="name"  class="form-control" placeholder="Enter name" value="{{user.organiser_name}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="text" name="phone" class="form-control" placeholder="enter phone number" value="{{user.organiser_phone}}"></div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="email" name="email" class="form-control" placeholder="enter email id" value="{{user.organiser_email}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="text" name="username" class="form-control" placeholder="Enter username" value="{{user.organiser_username}}"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><input type="password" name="password" class="form-control" placeholder="Enter password" value="{{user.organiser_password}}"></div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+              
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    </div>
+</form>
+    </div>
+</body>
+<script>
+
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+    }
+    
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    
+    
+    </script>
+
+</html>

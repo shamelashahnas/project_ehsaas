@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Event Booking</title>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
+    <style>
+      .nav {
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0; 
+          background: #fff1f1;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: center; 
+          align-items: center; 
+          z-index: 2;
+      }
+      .logo {
+          color: rgb(89, 6, 6);
+          font-size: 30px;
+          text-decoration: none;
+          font-family: 'Audiowide';
+      }
+      .eventcontainer {
+          max-width: 800px;
+          margin: 20px auto; 
+          background-color: #fff;
+      }
+      .tickettypes ul {
+          list-style-type: none;
+          padding-left: 0; 
+          margin-left: 10px;
+      }
+      .typesdetails{
+          font-size: 22px;
+      }
+      .ticket-box {
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+          border-radius: 8px; 
+          padding: 20px; 
+          margin-bottom: 20px; 
+      }
+      .ticket-type {
+          display: flex;
+          justify-content: space-between; 
+          align-items: center;
+          margin-bottom: 20px; 
+      }
+      .ticket-info {
+          flex-grow: 1; 
+      }
+      .price,
+      .typesdetails {
+          margin: 0; 
+      }
+      .quantity-controls {
+          display: flex;
+          align-items: center;
+      }
+      .rounded-input {
+          border: 2px solid white;
+          padding: 8px 12px;
+          font-size: 21px;
+          border-radius: 50%;
+          width: 50px;
+          text-align: center;
+      }
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0; 
+      }
+      .quantity-btn {
+          background-color: white;
+          border: 2px solid rgb(154, 16, 16);
+          color:rgb(154, 16, 16);
+          padding: 15px; 
+          font-size: 27px;
+          border-radius: 50%; 
+          width: 45px;
+          height: 45px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      .add-btn {
+          padding: 15px 25px;
+          border: 1px solid rgb(154, 16, 16);
+          border-radius: 15px;
+          color: #890707;
+          z-index: 1;
+          background: white;
+          position: relative;
+          font-weight: 1000;
+          font-size: 17px;
+          -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+          box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+          transition: all 250ms;
+          overflow: hidden;
+      }
+      .add-btn::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0;
+          border-radius: 15px;
+          background: linear-gradient(107.2deg, rgb(150, 15, 15) 10.6%, rgb(247, 0, 0) 91.1%);
+          z-index: -1;
+          -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+          box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+          transition: all 250ms
+      }
+      .add-btn:hover {
+          color: #e8e8e8;
+      }
+      .add-btn:hover::before {
+          width: 100%;
+      }
+    </style>
+</head>
+<body>
+
+
+    <div class="container-fluid nav custom-navbar">
+        <div class="logo ms-5 mt-3">
+         
+                <a href="{% url 'homepage' %}" style="text-decoration: none;">
+                    <p class="logo">EHSAAS</p></a>
+        </div>
+        <div class="col text-center">
+            <h5>{{ event.event_title }}</h5>
+            <h6>{{event.event_start_time|date:"h:i A"|upper}} {% if event.event_end_time %}- {{event.event_end_time|date:"h:i A"|upper}}{% endif %} | {{ event.event_start_date|date:"F j" }}{% if event.event_end_date %} - {{ event.event_end_date|date:"F j" }}{% endif %}</h6>
+
+        </div>
+    </div>
+<br><br>  
+  <!-- body -->
+  <form id="ticketForm" method="POST" action="{% url 'checkout' event.event_id %}">
+    {% csrf_token %}
+
+  <div class="container-fluid eventcontainer mt-5">
+    <br>
+    <div class="about">
+        <p style="font-weight: 600; font-size: 22px; color: black;">Event Tickets</p>
+        <p></p>
+    </div>
+    <div class="tickettypes">
+      {% for x in tickets %}
+      <div class="ticket-box">
+        <div class="ticket-type">
+          <div class="ticket-info">
+              <h5 class="ms-2" name="ticket_type">{{ x.ticket_type }}</h5>
+              <p class="price" name="ticket_price" style="font-size:20px"><i class="fa fa-inr mt-4 ms-2" aria-hidden="true">&nbsp;{{x.ticket_price}}</i></p>
+              <p class="typesdetails ms-2">{{x.ticket_details}}</p>
+          </div>
+          <button class="add-btn" onclick="getFirst(this)">ADD</button>
+          <div class="quantity-controls" style="display: none;">
+              <button class="quantity-btn decrement" type="button">-</button>
+              <input type="number" class="rounded-input" name="ticket_quantity" min="1" value="1">
+              <button class="quantity-btn increment" type="button">+</button>
+          </div>
+      </div>
+      
+      </div>
+      {% endfor %}
+  </div>
+  
+   
+    <br><br><br>
+</div>
+
+<nav class="navbar fixed-bottom bg-light " style="display: none;">
+    <div class="container-fluid justify-content-center">
+        <button type="button" class="add-btn" onclick="submitForm()">Proceed</button>
+    </div>
+</nav>
+</form>
+
+  <!-- end of body -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+  
+  <script>
+    var ticketType = "";
+    var ticketPrice = "";
+    var ticketQuantity = "";
+
+    function getFirst(btn) {
+        $(btn).siblings('.quantity-controls').show();
+        $(btn).hide();
+        $('.navbar').show();
+
+        ticketType = $(btn).siblings('.ticket-info').find('h5').text();
+        ticketPrice = $(btn).siblings('.ticket-info').find('.price').text().trim();
+        ticketQuantity = $(btn).siblings('.quantity-controls').find('input[type="number"]').val();
+    }
+
+    function submitForm() {
+    var currentQuantity = $('.quantity-controls input[type="number"]').val();
+    
+    if (ticketType !== "" && ticketPrice !== "" && currentQuantity !== "") {
+        ticketQuantity = currentQuantity;
+
+        var redirectURL = "{% url 'checkout' event.event_id %}?ticket_type=" + encodeURIComponent(ticketType) + "&ticket_price=" + encodeURIComponent(ticketPrice) + "&ticket_quantity=" + encodeURIComponent(ticketQuantity);
+        window.location.href = redirectURL;
+    } else {
+        alert("Please select a ticket before proceeding.");
+    }
+}
+
+
+    $(document).ready(function() {
+        $('.decrement').on('click', function() {
+            const currentValue = parseInt($(this).siblings('input[type="number"]').val());
+            if (currentValue > 1) {
+                $(this).siblings('input[type="number"]').val(currentValue - 1);
+            }
+        });
+
+        $('.increment').on('click', function() {
+            const currentValue = parseInt($(this).siblings('input[type="number"]').val());
+            $(this).siblings('input[type="number"]').val(currentValue + 1);
+        });
+
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.quantity-controls').length && !$(event.target).is('.add-btn')) {
+                $('.quantity-controls').hide();
+                $('.add-btn').show(); 
+                $('.navbar').hide();
+            }
+        });
+
+        $('.add-btn').on('click', function(event) {
+            event.preventDefault(); 
+            getFirst(this);
+        });
+    });
+</script>
+
+
+</body>
+</html>
+    

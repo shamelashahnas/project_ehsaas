@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+  <script src="https://kit.fontawesome.com/2e0586df66.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Event Search</title>
+    <style>
+      /* navbar */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+
+  }
+  
+  
+.sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index:3;
+      top: 0;
+      right: 0;
+      background-color: #6c0202;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+}
+  
+.sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+}
+  
+.sidenav a:hover {
+      color: #e4bf2d;
+}
+  
+.sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+}
+  
+ .nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      background: #540202;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      z-index: 2;
+ }
+  
+.logo {
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+      font-family:'Audiowide';
+}
+  
+.nav span:hover {
+      color: #ccc;
+}
+  
+.search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: auto;
+      margin-left: auto;
+  
+      border-radius: 5px;
+      margin-right: 10px;
+ }
+  
+.search {
+      border: 0;
+ }
+  
+.area {
+      border: none;
+      box-shadow: none;
+      border-color: none;
+      outline: none;
+ }
+
+/* navbar end */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+       
+        .search-form {
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%; /* Ensure the form takes full width */
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding-right: 35px; /* Ensure enough space for the icon */
+            position: relative;
+        }
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 70%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+        @media (max-width: 576px) {
+            .search-icon {
+                right: 5px; /* Adjust the position of the icon for smaller screens */
+            }
+        }
+        .tags{
+        margin-left: 25px;
+        margin-right: 25px;
+        line-height: 1.5;
+    }
+    
+    
+    .tags h5 {
+      margin-bottom: 16px;
+    }
+    
+    .tags-item {
+      margin-left: 10px;
+      display: inline-block;
+      margin-right: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .tags-link {
+      display: block;
+      padding: 7px 30px;
+      background-color: #f0f0f0;
+      color: #333;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+    }
+    .loop-img {
+    width: 100%;
+    height: 220px;
+    align-items: center;
+}
+
+.eventcard {
+
+    width: 100%;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.eventcard img {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.eventcard-body {
+    text-align: left;
+}
+
+.eventtype{
+color:red;
+font-size:20px;
+}
+
+.eventtitle{
+font-size:28px;
+font-weight:500;
+}
+
+.venue{
+font-size:21px;
+}
+
+.cardtitle {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+
+
+.book{
+    background-color: rgb(246, 246, 246);
+}
+
+
+.bookbutton {
+background-color: #730000d7;
+color: #fff;
+border: none;
+padding: 6px 16px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+
+.bookbutton:hover {
+background-color: #f969359a;
+}
+
+/* Filter Box */
+
+.filter-box {
+  padding: 15px;
+  /* border-radius: 6px; */
+  margin-bottom: 0;
+  /* border: 1px solid black; */
+  /* box-shadow: 0 2px 10px rgba(154, 151, 151, 0.612); */
+}
+
+
+.filter-box h3 {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.filter-item {
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(249, 245, 245, 0.612);
+}
+.searchicon {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  color: #aaa;
+          
+    }
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 30px 8px 10px;
+  border: 1px  #ccc;
+  border-radius: 5px;
+}
+
+.search-box .fas.fa-search {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+input[type="date"] {
+  border: none;
+}
+
+.form-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px  #ccc;
+}
+
+/* end of filter box */
+
+
+    
+    </style>
+</head>
+<body>
+  <!--navbar-->
+
+<div id="mySidenav" class="sidenav">
+  <i class="closebtn fa fa-close  mt-4 pe-1" style="color: rgba(255, 255, 255, 0.895);" onclick="closeNav()"></i>
+
+
+ 
+  {% if 'user' not in request.session %}
+  <a href="{% url 'create_event' %}">Create Events</a>
+  {% endif %}
+  <a href="{% url 'browse' %}">Browse Events</a>
+
+  {% if 'user' in request.session %}
+  <a href="{% url 'mybookings' %}">Bookings</a>
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+
+  {% elif 'organiser' in request.session %}
+  <a href="{% url 'edit_profile' %}">Edit Profile</a>
+  <a href="{% url 'your_events' %}">Your Events</a>
+  <a href="{% url 'logout' %}" >Logout</a>
+  {% else %}
+  <a href="{% url 'signup' %}">Signup</a>
+  <a href="{% url 'login_page' %}">Login</a>
+  {% endif %}
+     
+ 
+</div>
+
+<div class="container-fluid nav  custom-navbar">
+  <div class="logo ms-4 mt-3">
+    <a href="{% url 'homepage' %}" style="text-decoration: none;">
+      <p class="logo">EHSAAS</p></a>
+  </div>
+  <div class="search-container  pe-3">
+    <a href="{% url 'search' %}"><i class="fa fa-search fa-2x" style="color: white;"  ></i></a>
+  </div>
+  <div>
+    <i class="fa fa-bars fa-2x pe-4" style="color: white;" onclick="openNav()"></i>
+  </div>
+</div>
+
+<!--end of navbar-->
+    <br><br><br><br>
+
+    <div class="container-fluid justify-content-center d-flex">   
+        <form class="search-form" id="searchForm" method="POST">
+            {% csrf_token %}
+            <div class="position-relative justify-content-center ms-5 " > <br>
+                <input type="text" id="searchInput" name="search" style="border-color: #710404;" value="{{ search_query }}" placeholder="Search events... " onchange="this.form.submit()">
+                <i class="fa fa-search search-icon" style="color: #6c0202;"></i>
+                
+            </div>
+
+    </div><hr style="color: rgb(140, 5, 5);">
+    <div class="container-fluid mb-5">
+
+      <div class="row mt-5">
+          <!-- Filter Box -->
+          <div class="col-md-2 " >
+            <div class="filter-box   ">
+              <h3>Filter Options</h3>
+              <div class="filter-item">
+                  <div class="search-box ">
+                      <input type="search" value="{{selected_location}}" name="location" placeholder=" Location" >
+                      <i class="fa fa-search searchicon"></i>
+                  </div>
+              </div>
+
+
+
+              <div class="filter-item">
+                <input type="text" class="form-control" placeholder="On" id="date-filter-text" onfocus="toggleDateInput('date', true)" onchange="updatePlaceholder('date', this.value)">
+                <input type="date" class="form-control" name="date" id="date-filter" onblur="toggleDateInput('date', false)" onchange="this.form.submit()" style="display: none;">
+            </div>
+            
+            <div class="filter-item d-flex" style="gap:10px">
+                <input type="text" class="form-control" placeholder="From" id="start-date-filter-text" onfocus="toggleDateInput('start', true)" onchange="updatePlaceholder('start', this.value)">
+                <input type="date" class="form-control" name="start_date" id="start-date-filter" onblur="toggleDateInput('start', false)" onchange="this.form.submit()" style="display: none;">
+                
+                <input type="text" class="form-control" placeholder="To" id="end-date-filter-text" onfocus="toggleDateInput('end', true)" onchange="updatePlaceholder('end', this.value)">
+                <input type="date" class="form-control" name="end_date" id="end-date-filter" onblur="toggleDateInput('end', false)" onchange="this.form.submit()" style="display: none;">
+            </div>
+   
+
+
+              <div class="filter-item">
+
+                  <select class="form-select" id="price-filter" name="price" onchange="this.form.submit()">
+                      <option value="">Price Range</option>
+                      <option value="lowest">Lowest</option>
+                      <option value="highest">Highest</option>
+                  </select>
+              </div>
+              <div class="filter-item">
+                  <select class="form-select" id="status-filter" name="status" onchange="this.form.submit()">
+                      <option value=""> Status</option>
+                      <option value="upcoming">Upcoming</option>
+                      <option value="soldout">Sold Out</option>
+                      <option value="expired">Expired</option>
+                      <option value="ongoing">Ongoing</option>
+                  </select>
+              </div>
+          </div>
+       
+          </div>
+        </form>
+          <!-- End of Filter Box -->
+  
+
+          <div class="col-md-10 mt-4">
+          <div class="container-fluid  ">
+            <div class="row row-cols-1 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 g-5">
+           {% for x in events %}
+              <div class="col-lg-3 col-md-8 col-sm-6">
+                <div class="card eventcard border-1 " style="height:545px; width: 100%; border-radius:5%">
+                <div class="loop-img">
+                  <a href="{% url 'event_type_page' x.event_type_id.event_type_id %}">
+                  <img src="{{ x.event_images.all.0.event_image.url }}"  alt="Music Event"></a>
+                </div>
+                  <div class="cardbody eventcard-body mt-3 ms-4 ">
+                       <div class="eventtype " style="height:50px;"> <p  >{{x.event_type_id.event_type}}</p></div>
+                    <div class="eventtitle" style="height:80px;  font-size:24px; font-weight:600;"><p >{{ x.event_title}}</p></div>
+                      <div  class="venue" style="height:100px;" ><p>{{x.venue}} | {{x.event_start_time|date:"h:i A"|upper}} {% if x.event_end_time %}- {{x.event_end_time|date:"h:i A"|upper}}{% endif %}</p></div>
+                      </div>
+                     <div class="book d-flex ">
+                        <p class="price" style="font-size:20px"><i class="fa fa-inr mt-4 ms-4" aria-hidden="true">&nbsp;{{x.ticket_price}} Onwards</i></p>
+                        <button class="bookbutton ms-auto me-3 mt-3 mb-4">Book Now</button>
+                  </div>
+                </div>
+              </div>
+               {% endfor %}
+            </div>
+        </div></div>
+
+        <script>
+
+ function toggleDateInput(field, focus) {
+        let dateInput, textInput;
+        if (field === 'date') {
+            dateInput = document.getElementById('date-filter');
+            textInput = document.getElementById('date-filter-text');
+        } else if (field === 'start') {
+            dateInput = document.getElementById('start-date-filter');
+            textInput = document.getElementById('start-date-filter-text');
+        } else if (field === 'end') {
+            dateInput = document.getElementById('end-date-filter');
+            textInput = document.getElementById('end-date-filter-text');
+        }
+
+        if (focus) {
+            textInput.style.display = 'none';
+            dateInput.style.display = '';
+            dateInput.focus();
+        } else {
+            if (dateInput.value) {
+                textInput.style.display = 'none';
+                dateInput.style.display = '';
+            } else {
+                textInput.style.display = '';
+                dateInput.style.display = 'none';
+            }
+        }
+    }
+
+    // Function to update the placeholder of the date input
+    function updatePlaceholder(field, value) {
+        let dateInput = document.getElementById(field === 'date' ? 'date-filter-text' : (field === 'start' ? 'start-date-filter-text' : 'end-date-filter-text'));
+        if (value) {
+            // If a date is selected, set the placeholder to the selected date
+            dateInput.setAttribute('placeholder', value);
+        } else {
+            // If no date is selected, revert to the default placeholder
+            dateInput.setAttribute('placeholder', field === 'date' ? 'Select Date' : (field === 'start' ? 'Select Start Date' : 'Select End Date'));
+        }
+    }
+
+
+  function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+        </script>
+</body>
+</html>
