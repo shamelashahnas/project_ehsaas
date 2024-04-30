@@ -25,7 +25,6 @@ def create(request):
         if request.method == "POST":
             event_title = request.POST.get('event_title')
             event_type_id = request.POST.get('event_type') 
-            print (event_type_id) 
             event_description = request.POST.get('event_description')
             event_location_id = request.POST.get('event_location')  
             event_venue = request.POST.get('event_venue')
@@ -38,7 +37,6 @@ def create(request):
             event_license = request.POST.get('event_license')
 
             entry_type = request.POST.get('entry_type')
-            print(entry_type)
 
             new_event = EventModel()
 
@@ -67,9 +65,7 @@ def create(request):
                 event_tag.save()
 
             if 'upload' in request.FILES:
-                print('Uploading')
-                images = request.FILES.getlist('upload') 
-                print(images)                
+                images = request.FILES.getlist('upload')                
                 for image in images:
                     event_image = EventImageModel(event_id=new_event, event_image=image)
                     event_image.save()
@@ -88,12 +84,8 @@ def create(request):
 
 
 def ticket(request, event_id):
-    print('hihi')
-    print(event_id)
 
     if request.method == 'POST':
-        print('hihi')
-
         ticket_type = request.POST.get('ticket_type')
         ticket_details = request.POST.get('ticket_details')
         ticket_price = request.POST.get('ticket_price')
@@ -114,7 +106,6 @@ def ticket(request, event_id):
         new_ticket.save()
 
         ticket = EventTicketModel.objects.filter(event_id =event_id)
-        print(ticket)
         least_price_ticket = EventTicketModel.objects.filter(event_id=event_id).order_by('ticket_price').first()
         event.ticket_price = least_price_ticket.ticket_price
         event.save()
@@ -139,7 +130,6 @@ def your_tickets(request, event_id):
     return render(request, 'attendee/your_tickets.html', {'tickets': tickets, 'event':event })
     
 def edit_ticket(request, ticket_id):
-    print(ticket_id)
     ticket = EventTicketModel.objects.get(ticket_id=ticket_id)
     if request.method == 'POST':
         ticket.ticket_type = request.POST.get('ticket_type')

@@ -90,12 +90,10 @@ def login(request):
     """
     if request.method == "POST":
         user_data = request.POST.get('user_data')
-        print(user_data)
         password = request.POST.get('password')
         organiser = OrganiserDetailsModel.objects.filter(
             Q(organiser_username=user_data) | Q(organiser_email=user_data) | Q(organiser_phone=user_data),
             organiser_password=password).first()
-        print(organiser)
         user = AttendeeDetailsModel.objects.filter(
             Q(attendee_username=user_data) | Q(attendee_email=user_data) | Q(attendee_phone=user_data),
             attendee_password=password).first()
@@ -105,7 +103,6 @@ def login(request):
             return redirect('/')
         elif organiser:
             request.session['organiser'] = organiser.organiser_id
-            print(organiser)
             return redirect('/')
         else:
             return render(request, 'attendee/login.html')
@@ -136,14 +133,11 @@ def homepage(request):
             event_type_list = []
 
         event_type_counts = Counter(event_type_list)
-        print("Event type counts:", event_type_counts)
 
         most_visited_event_type_ids = [event_type_id for event_type_id, _ in event_type_counts.most_common(2)]  
         most_visited_event_types = EventTypeModel.objects.filter(event_type_id__in=most_visited_event_type_ids) 
-        print("Most visited event types:", most_visited_event_types)
 
         filtered_events = EventModel.objects.filter(event_type_id__in=most_visited_event_types)
-        print("Filtered events:", filtered_events)
 
     else:
         event_type_list = request.COOKIES.get('event_type_list')
@@ -153,14 +147,11 @@ def homepage(request):
             event_type_list = []    
 
         event_type_counts = Counter(event_type_list)
-        print("Event type counts:", event_type_counts)
 
         most_visited_event_type_ids = [event_type_id for event_type_id, _ in event_type_counts.most_common(2)]  
         most_visited_event_types = EventTypeModel.objects.filter(event_type_id__in=most_visited_event_type_ids) 
-        print("Most visited event types:", most_visited_event_types)
 
         filtered_events = EventModel.objects.filter(event_type_id__in=most_visited_event_types)
-        print("Filtered events:", filtered_events)
 
     selected_location_name = None
     event_type_images = EventTypeModel.objects.prefetch_related('eventtypeimagemodel_set')
@@ -239,7 +230,6 @@ def checkout(request, event_id):
     if 'user' in request.session:
         user_id = request.session['user']
         attendee= AttendeeDetailsModel.objects.get(attendee_id=user_id)
-        print(user_id)
         event = EventModel.objects.get(event_id=event_id)
         ticket_type = request.GET.get('ticket_type')
         ticket = EventTicketModel.objects.get(event_id=event_id, ticket_type=ticket_type)
@@ -291,9 +281,6 @@ def search(request):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
 
-        print("Search term:", searched)  
-        print(selected_location)
-
     
 
         if searched:
@@ -302,15 +289,13 @@ def search(request):
                 Q(location__city_name__icontains=searched) | 
                 Q(eventtagsmodel__event_tag__icontains=searched)
             )
-            print("Number of events:", events.count()) 
+
             events = events.distinct()
-            print("Number of events:", events.count())  
 
         if start_date and end_date:
             events = events.filter(event_start_date__range=[start_date, end_date])
 
         if selected_location:
-            print('loc search')
             events = events.filter(Q(location__city_name__icontains=selected_location))
 
         if selected_price == 'lowest':
@@ -319,20 +304,15 @@ def search(request):
             events = events.order_by('-ticket_price')
 
         if selected_date:
-            print('date')
             events = events.filter(event_start_date=selected_date)
 
         if selected_status == 'upcoming':
-            print('upcoming')
             events = events.filter(booking_start_date__gt=date.today())
         elif selected_status == 'soldout':
-            print('soldout')
             events = events.filter(booking_end_date__lt=date.today())
         elif selected_status == 'expired':
-            print('expired')
             events = events.filter(event_start_date__lt=date.today(), booking_end_date__lt=date.today())
         elif selected_status == 'ongoing':
-            print('ongoing')
             events = events.filter(booking_start_date__lte=date.today(), event_start_date__gte=date.today())
    
     events_status = [(event, calculate_event_status(event)) for event in events]
