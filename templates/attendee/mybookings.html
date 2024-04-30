@@ -12,7 +12,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Create</title>
+    <title>mybookings</title>
 
     <style>
         /* navbar */
@@ -116,11 +116,31 @@
         }
 
         .event {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.379);
+
             padding: 20px;
             height: 100%;
-        }
+            --b: 5px;  
+            --s: 30px; 
+            --c1: #6d2121;
+            --c2: #c79292;
+            position: relative;
 
+        }
+.event::before{
+        content:"";
+        position: absolute;
+        inset: 0;
+        padding: var(--b);
+        background: 
+        repeating-conic-gradient(var(--c1) 0 25%,var(--c2) 0 50%) 
+        0 0/var(--s) var(--s) round;
+        -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+}
         .preview {
             font-size: 28px;
             font-family: Georgia, 'Times New Roman', Times, serif;
@@ -151,7 +171,7 @@
         {% if 'user' not in request.session %}
         <a href="{% url 'create_event' %}">Create Events</a>
         {% endif %}
-        <a href="{% url 'browse' %}">Browse Events</a>
+        <a href="{% url 'search' %}">Browse Events</a>
       
         {% if 'user' in request.session %}
         <a href="{% url 'mybookings' %}">Bookings</a>
@@ -191,13 +211,43 @@
         </div>
         <div class="row">
             {% for event in future_bookings %}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-8 mb-4">
                 
                 <div class="container event">
+                  
                     <p class="preview">{{ event.event_id.event_title }}</p><br>
-                    <p>{{event.ticket_quantity}} {{event.ticket_id.ticket_type}} Tickets</p>
                    
+                    <p>{{event.event_id.venue}}</p>
+                    <p>{{event.event_id.event_start_date}}{% if event.event_id.event_end_date %} - {{ event.event_id.event_end_date }}{% endif %}
+                         | {{ event.event_id.event_start_time|date:"h:i A"|upper}}
+                    </p>
+                    <p>Ticket Type :  {{event.ticket_id.ticket_type}} </p>
+                    <p>Quantity: {{ event.ticket_quantity }}</p>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Total Price:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>{{ event.total_price }}</span></p>
+                        </div>
+                    </div>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Covenience Fees:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>140</span></p>
+                        </div>
+                    </div><hr>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Amount Paid:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>{{ event.total_price|add:140 }}</span></p>
+                        </div>
                 </div>
+                
             </div>
             {% endfor %}
         </div>
@@ -211,13 +261,43 @@
         </div>
         <div class="row">
             {% for event in past_bookings %}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-8 mb-4">
                 
                 <div class="container event">
-                    <p class="preview">{{ event.event_id.event_title }}</p><br>
-                    <p>{{event.ticket_quantity}} {{event.ticket_id.ticket_type}} Tickets</p>
-                   
-                </div>
+                    <p class="preview">{{ event.event_id.event_title }}</p><br>               
+                    <p>{{event.event_id.venue}}</p>
+                    <p>{{event.event_id.event_start_date}}{% if event.event_id.event_end_date %} - {{ event.event_id.event_end_date }}{% endif %}
+                         | {{ event.event_id.event_start_time|date:"h:i A"|upper}}
+                    </p>
+                    <p>Ticket Type :  {{event.ticket_id.ticket_type}} </p>
+                    <p>Quantity: {{ event.ticket_quantity }}</p>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Total Price:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>{{ event.total_price }}</span></p>
+                        </div>
+                    </div>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Covenience Fees:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>140</span></p>
+                        </div>
+                    </div><hr>
+                    <div class="row totalprice">
+                        <div class="col-md-6">
+                            <p>Amount Paid:</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p><i class="fa fa-inr"></i><span>{{ event.total_price|add:140 }}</span></p>
+                        </div>
+                    </div>
+             
+            
+                 <a href="{% url 'feedback' event.booking_id  %}"><button class="btn btn-outline-danger">Add Feedback</button></div></a>
             </div>
             {% endfor %}
         </div>
@@ -236,6 +316,9 @@
             document.getElementById("mySidenav").style.width = "0";
         }
         // end of navbar
+
+
+
     </script>
 
 </body>

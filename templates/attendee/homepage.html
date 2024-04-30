@@ -162,6 +162,7 @@
 
     width: 100%;
     overflow: hidden;
+    height:auto;
     margin: 10px;
     border: 1;
     border-radius: 4% ;
@@ -188,9 +189,7 @@ font-size:28px;
 font-weight:500;
 }
 
-.venue{
-font-size:21px;
-}
+
 
 .cardtitle {
     text-decoration: none;
@@ -199,26 +198,33 @@ font-size:21px;
 }
 
 
-
-.book{
-    background-color: rgb(246, 246, 246);
-}
-
-
-.bookbutton {
-background-color: #730000d7;
-color: #fff;
-border: none;
-padding: 6px 16px;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s ease;
-}
-
-
-.bookbutton:hover {
-background-color: #f969359a;
-}
+.tags{
+        margin-left: 25px;
+        margin-right: 25px;
+        line-height: 1.5;
+    }
+    
+    
+    .tags h5 {
+      margin-bottom: 16px;
+    }
+    
+    .tags-item {
+      margin-left: 10px;
+      display: inline-block;
+      margin-right: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .tags-link {
+      display: block;
+      padding: 7px 30px;
+      background-color: #f1e7e5;
+      color: #333;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+    }
 
 /* end body */
 
@@ -261,8 +267,7 @@ background-color: #f969359a;
   {% if 'user' not in request.session %}
   <a href="{% url 'create_event' %}">Create Events</a>
   {% endif %}
-  <a href="{% url 'browse' %}">Browse Events</a>
-
+  <a href="{% url 'search' %}">Browse Events</a>
   {% if 'user' in request.session %}
   <a href="{% url 'mybookings' %}">Bookings</a>
   <a href="{% url 'edit_profile' %}">Edit Profile</a>
@@ -311,12 +316,10 @@ background-color: #f969359a;
     <p class="categorytext"> Browse by categories</p>
   <div class="container-fluid  ">
     <div class="row justify-content-center">
-
-
-   {% for event_type in event_type_images %}
+ {% for event_type in event_type_images %}
 <div class="col-lg-2 col-md-4 col-sm-6">
     <div class="card event-card border-0">
-        <a href="{% url 'event_type_page' event_type.event_type_id %}">
+        <a href="{% url 'search' %}?query={{ event_type.event_type }}">
             <img src="{{ event_type.eventtypeimagemodel_set.all.0.event_type_image.url }}" alt="{{ event_type.event_type }}">
         </a>
         <div class="card-body event-card-body">
@@ -361,15 +364,18 @@ background-color: #f969359a;
 <!-- upcoming event cards as a carousel -->
 <div id="eventCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
+
       {% for x in filtered_events %}
       {% if forloop.counter0|divisibleby:3 %}
       <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <div class="row justify-content-center">
+          <div class="row justify-content-center">  
+              <p class="recomevents mt-4 ms-5" style="font-size: 30px; font-weight: 600; color:#7f0606;
+              font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">Recommended Events<p>
       {% endif %}
               <div class="col-lg-3 col-md-4 col-sm-7 ms-1 me-1 mt-5 d-flex">
-                  <div class="card eventcard " style="height:345px; width: 100%; ">
+                  <div class="card eventcard " style="height:auto; width: 100%; ">
                       <div class="loop-img">
-                          <a href="{% url 'event_type_page' x.event_type_id.event_type_id %}">
+                          <a href="{% url 'event_page' x.event_id %}">
                               <img src="{{ x.event_images.all.0.event_image.url }}" alt="Music Event">
                           </a>
                       </div>
@@ -385,7 +391,7 @@ background-color: #f969359a;
       </div>
       {% endif %}
       {% endfor %}
-  </div>
+ 
   <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
@@ -393,13 +399,28 @@ background-color: #f969359a;
   <button class="carousel-control-next" type="button" data-bs-target="#eventCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
-  </button>
+  </button> </div>
 </div>
+<div class="container-fluid  mt-5">
+  <p class="recomevents mt-4 ms-5" style="font-size: 30px; font-weight: 600; color:#7f0606;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+   'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"> Popular Cities<p>
 
+<div class="tags">
+  <ul>{% for tag in tags %}
+    <li class="tags-item inline ">
+      <a href="{% url 'search' %}?query={{ tag.event_tag }}" class="tags-link ">{{tag.event_tag}}</a> 
+    </li>
+    
+   {% endfor %}
+  </ul>
+</div>
+  
+</div>
 
 <!-- end of body -->
 <!-- Footer Section -->
-<footer class="footer mt-5">
+<footer class="footer ">
   <div class="container">
       <div class="row">
           <div class="col-md-3">

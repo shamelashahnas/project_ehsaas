@@ -253,7 +253,7 @@
   {% if 'user' not in request.session %}
   <a href="{% url 'create_event' %}">Create Events</a>
   {% endif %}
-  <a href="{% url 'browse' %}">Browse Events</a>
+  <a href="{% url 'search' %}">Browse Events</a>
 
   {% if 'user' in request.session %}
   <a href="{% url 'mybookings' %}">Bookings</a>

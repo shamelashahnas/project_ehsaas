@@ -164,69 +164,25 @@ def homepage(request):
 
     selected_location_name = None
     event_type_images = EventTypeModel.objects.prefetch_related('eventtypeimagemodel_set')
+    
 
 
 
     filtered_events_with_images = filtered_events.prefetch_related('event_images')
+    tag = EventTagsModel.objects.all()
+    tags = tag.filter(Q(event_tag__icontains='Things to do in'))
+
 
 
     return render(request, 'attendee/homepage.html', {
         'filtered_events': filtered_events_with_images,
         'selected_location_name': selected_location_name,
         'event_type_images': event_type_images,
+        'tags':tags
        
     })
 
-def browse(request):
-    events = EventModel.objects.all()
-    selected_location = ''  
-   
-    if request.method == 'POST':
-        selected_location = request.POST.get('location')
-        selected_date = request.POST.get('date')
-        selected_price = request.POST.get('price')
-        selected_status = request.POST.get('status')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
 
-        if start_date and end_date:
-            events = events.filter(event_start_date__range=[start_date, end_date])
-
-        if selected_location:
-            print('loc search')
-            events = events.filter(Q(location__city_name__icontains=selected_location))
-
-        if selected_price == 'lowest':
-            events = events.order_by('ticket_price')
-        elif selected_price == 'highest':
-            events = events.order_by('-ticket_price')
-
-        if selected_date:
-            print('date')
-            events = events.filter(event_start_date=selected_date)
-
-        if selected_status == 'upcoming':
-            print('upcoming')
-            events = events.filter(booking_start_date__gt=date.today())
-        elif selected_status == 'soldout':
-            print('soldout')
-            events = events.filter(booking_end_date__lt=date.today())
-        elif selected_status == 'expired':
-            print('expired')
-            events = events.filter(event_start_date__lt=date.today(), booking_end_date__lt=date.today())
-        elif selected_status == 'ongoing':
-            print('ongoing')
-            events = events.filter(booking_start_date__lte=date.today(), event_start_date__gte=date.today())
-   
-    events_status = [(event, calculate_event_status(event)) for event in events]
-    
-   
-    return render(request, 'attendee/event_type.html', {
-        'events': events,
-        'events_status': events_status,
-        'selected_location': selected_location 
-    })
-    
    
 
 def calculate_event_status(event):
@@ -246,89 +202,7 @@ def calculate_event_status(event):
     elif event.booking_start_date <= today <= event.event_start_date:
         return 'ongoing'
 
-def event_type_page(request, event_type_id):
-    event_type = EventTypeModel.objects.get(pk=event_type_id)
-    filtered_events = EventModel.objects.filter(event_type_id=event_type)
-    selected_location = ''  
-        
-    event_type_images = event_type.eventtypeimagemodel_set.all()
-    second_image = None
-    if len(event_type_images) >= 2:
-        second_image = event_type_images[1].event_type_image.url
 
-    if request.method == 'POST':
-        selected_location = request.POST.get('location')
-        selected_date = request.POST.get('date')
-        selected_price = request.POST.get('price')
-        selected_status = request.POST.get('status')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-
-        if start_date and end_date:
-            filtered_events = filtered_events.filter(event_start_date__range=[start_date, end_date])
-
-        if selected_location:
-            print('loc search')
-            filtered_events = filtered_events.filter(Q(location__city_name__icontains=selected_location))
-
-        if selected_price == 'lowest':
-            filtered_events = filtered_events.order_by('ticket_price')
-        elif selected_price == 'highest':
-            filtered_events = filtered_events.order_by('-ticket_price')
-
-        if selected_date:
-            print('date')
-            filtered_events = filtered_events.filter(event_start_date=selected_date)
-
-        if selected_status == 'upcoming':
-            print('upcoming')
-            filtered_events = filtered_events.filter(booking_start_date__gt=date.today())
-        elif selected_status == 'soldout':
-            print('soldout')
-            filtered_events = filtered_events.filter(booking_end_date__lt=date.today())
-        elif selected_status == 'expired':
-            print('expired')
-            filtered_events = filtered_events.filter(event_start_date__lt=date.today(), booking_end_date__lt=date.today())
-        elif selected_status == 'ongoing':
-            print('ongoing')
-            filtered_events = filtered_events.filter(booking_start_date__lte=date.today(), event_start_date__gte=date.today())
-   
-    events_status = [(event, calculate_event_status(event)) for event in filtered_events]
-    
-    if 'user' in request.session:
-        user_id = request.session['user']
-        event_type_list = request.session.get(f'event_type_list_{user_id}', []) 
-        event_type_list.append(event_type_id)  
-        request.session[f'event_type_list_{user_id}'] = event_type_list
-        storage_type = "session"
-    else:
-        event_type_list = request.COOKIES.get('event_type_list')
-        print(event_type_list)
-        if event_type_list :
-            event_type_list = json.loads(event_type_list)
-        else:
-            event_type_list = []    
-
-        event_type_list.append(event_type_id)   
-        
-        response = render(request, 'attendee/event_type.html', {
-            'event_type': event_type,
-            'events_status': events_status,
-            'second_image_url': second_image, 
-            'selected_location': selected_location 
-        })
-        response.set_cookie('event_type_list', json.dumps(event_type_list))
-        storage_type = "cookie"
-        print('hello world')
-        print(f"Appended list in {storage_type}:", event_type_list)
-        return response
-
-    return render(request, 'attendee/event_type.html', {
-        'event_type': event_type,
-        'events_status': events_status,
-        'second_image_url': second_image, 
-        'selected_location': selected_location 
-    })
     
 
   
@@ -401,7 +275,12 @@ def pop(request):
 
 def search(request):
     tags = EventTagsModel.objects.all()
-    events = EventModel.objects.none()
+    events = EventModel.objects.all()
+    searched= ''
+    selected_location = ''
+    start_date = ''
+    end_date = ''
+
             
     if request.method == "POST":
         searched = request.POST.get('search')
@@ -413,6 +292,10 @@ def search(request):
         end_date = request.POST.get('end_date')
 
         print("Search term:", searched)  
+        print(selected_location)
+
+    
+
         if searched:
             events = EventModel.objects.filter(
                 Q(event_title__icontains=searched) | 
@@ -454,13 +337,18 @@ def search(request):
    
     events_status = [(event, calculate_event_status(event)) for event in events]
 
-
     search_query = request.GET.get('query', '')
+    
+    events = events.filter(
+        Q(eventtagsmodel__event_tag__icontains=search_query) |
+         Q(event_type_id__event_type__icontains=search_query) |
+        Q(location__city_name__icontains=search_query) 
+    ).distinct()
+    
 
     return render(request, 'attendee/search.html', {'tags': tags, 'events_status': events_status,
                                                     
                                                     'search_query': search_query, 'events': events})
-
 
 
 
@@ -477,6 +365,22 @@ def mybookings(request):
         # Similarly, for future bookings based on event's start date
         future_bookings = bookings.filter(event_id__event_start_date__gte=timezone.now().date())
         past_bookings = bookings.filter(event_id__event_start_date__lt=timezone.now().date())
+      
         
-       
         return render(request, 'attendee/mybookings.html', {'bookings': bookings, 'future_bookings':future_bookings, 'past_bookings': past_bookings,})
+    
+
+    
+def feedback(request, booking_id):
+    booking = AttendeeBookingsModel.objects.get(pk = booking_id)
+
+    if request.method == "POST":
+        feedback = AttendeeFeedbackModel()
+        feedback.booking_id = booking
+        feedback.attendee_rating = request.POST.get('rating')
+        feedback.attendee_feedback = request.POST.get('feedback')
+        feedback.save()
+        return redirect('/mybookings')
+
+    
+    return render(request, 'attendee/feedback.html', {'booking': booking})

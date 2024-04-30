@@ -101,26 +101,7 @@
       outline: none;
  }
 
-/* navbar end */
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-        }
-       
+/* navbar end */     
         .search-form {
             max-width: 800px;
             text-align: center;
@@ -144,39 +125,13 @@
         }
         @media (max-width: 576px) {
             .search-icon {
-                right: 5px; /* Adjust the position of the icon for smaller screens */
+                right: 5px; 
             }
         }
-        .tags{
-        margin-left: 25px;
-        margin-right: 25px;
-        line-height: 1.5;
-    }
-    
-    
-    .tags h5 {
-      margin-bottom: 16px;
-    }
-    
-    .tags-item {
-      margin-left: 10px;
-      display: inline-block;
-      margin-right: 5px;
-      margin-bottom: 10px;
-    }
-    
-    .tags-link {
-      display: block;
-      padding: 7px 30px;
-      background-color: #f0f0f0;
-      color: #333;
-      text-decoration: none;
-      border: 1px solid #ccc;
-      border-radius: 15px;
-    }
+
     .loop-img {
     width: 100%;
-    height: 220px;
+    height: 200px;
     align-items: center;
 }
 
@@ -186,6 +141,14 @@
     overflow: hidden;
     margin: 10px;
 }
+.eventcard:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .eventcard:hover .loop-img img {
+    filter: brightness(80%); 
+  }
 
 .eventcard img {
   width: 100%;
@@ -219,25 +182,7 @@ font-size:21px;
 
 
 
-.book{
-    background-color: rgb(246, 246, 246);
-}
 
-
-.bookbutton {
-background-color: #730000d7;
-color: #fff;
-border: none;
-padding: 6px 16px;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s ease;
-}
-
-
-.bookbutton:hover {
-background-color: #f969359a;
-}
 
 /* Filter Box */
 
@@ -301,7 +246,24 @@ input[type="date"] {
 }
 
 /* end of filter box */
+/* footer */
+    
+.footer{
+    background-color: #540202;
 
+  }
+  .footer-heading{
+    color: white;
+  }
+.footer a {
+    text-decoration: none;
+    color: whitesmoke;
+  }
+  .list-unstyled li {
+    margin-bottom: 8px;
+}
+
+/* end of footer */
 
     
     </style>
@@ -317,7 +279,7 @@ input[type="date"] {
   {% if 'user' not in request.session %}
   <a href="{% url 'create_event' %}">Create Events</a>
   {% endif %}
-  <a href="{% url 'browse' %}">Browse Events</a>
+  <a href="{% url 'search' %}">Browse Events</a>
 
   {% if 'user' in request.session %}
   <a href="{% url 'mybookings' %}">Bookings</a>
@@ -361,17 +323,17 @@ input[type="date"] {
                 
             </div>
 
-    </div><hr style="color: rgb(140, 5, 5);">
+    </div>
+    <hr style="color: rgb(140, 5, 5);">
     <div class="container-fluid mb-5">
-
       <div class="row mt-5">
           <!-- Filter Box -->
-          <div class="col-md-2 " >
+          <div class="col-md-3 " >
             <div class="filter-box   ">
               <h3>Filter Options</h3>
               <div class="filter-item">
                   <div class="search-box ">
-                      <input type="search" value="{{selected_location}}" name="location" placeholder=" Location" >
+                      <input type="search" value="{{selected_location}}" name="location" placeholder=" Location" onchange="this.form.submit()">
                       <i class="fa fa-search searchicon"></i>
                   </div>
               </div>
@@ -385,10 +347,10 @@ input[type="date"] {
             
             <div class="filter-item d-flex" style="gap:10px">
                 <input type="text" class="form-control" placeholder="From" id="start-date-filter-text" onfocus="toggleDateInput('start', true)" onchange="updatePlaceholder('start', this.value)">
-                <input type="date" class="form-control" name="start_date" id="start-date-filter" onblur="toggleDateInput('start', false)" onchange="this.form.submit()" style="display: none;">
+                <input type="date" class="form-control" name="start_date" id="start-date-filter" onblur="toggleDateInput('start', false)" value="{{ start_date}}" style="display: none;">
                 
                 <input type="text" class="form-control" placeholder="To" id="end-date-filter-text" onfocus="toggleDateInput('end', true)" onchange="updatePlaceholder('end', this.value)">
-                <input type="date" class="form-control" name="end_date" id="end-date-filter" onblur="toggleDateInput('end', false)" onchange="this.form.submit()" style="display: none;">
+                <input type="date" class="form-control" name="end_date" id="end-date-filter" onblur="toggleDateInput('end', false)" value="{{ end_date}}" onchange="this.form.submit()" style="display: none;">
             </div>
    
 
@@ -411,36 +373,94 @@ input[type="date"] {
                   </select>
               </div>
           </div>
-       
           </div>
         </form>
           <!-- End of Filter Box -->
   
 
-          <div class="col-md-10 mt-4">
+          <div class="col-md-9 mt-4">
           <div class="container-fluid  ">
             <div class="row row-cols-1 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 g-5">
            {% for x in events %}
-              <div class="col-lg-3 col-md-8 col-sm-6">
-                <div class="card eventcard border-1 " style="height:545px; width: 100%; border-radius:5%">
-                <div class="loop-img">
-                  <a href="{% url 'event_type_page' x.event_type_id.event_type_id %}">
-                  <img src="{{ x.event_images.all.0.event_image.url }}"  alt="Music Event"></a>
+              <div class="col-lg-4 col-md-8 col-sm-6">
+                <div class="card eventcard border-0" >
+                  <div class="loop-img">
+                    {% if 'user' in request.session or 'organiser' in request.session %}
+                        <a href="{% url 'event_page' x.event_id %}">
+                            <img src="{{ x.event_images.all.0.event_image.url }}" alt="Music Event">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login_page' %}">
+                            <img src="{{ x.event_images.all.0.event_image.url }}" alt="Music Event">
+                        </a>
+                    {% endif %}
                 </div>
+                
                   <div class="cardbody eventcard-body mt-3 ms-4 ">
-                       <div class="eventtype " style="height:50px;"> <p  >{{x.event_type_id.event_type}}</p></div>
-                    <div class="eventtitle" style="height:80px;  font-size:24px; font-weight:600;"><p >{{ x.event_title}}</p></div>
-                      <div  class="venue" style="height:100px;" ><p>{{x.venue}} | {{x.event_start_time|date:"h:i A"|upper}} {% if x.event_end_time %}- {{x.event_end_time|date:"h:i A"|upper}}{% endif %}</p></div>
+                       <div class="eventtype " > <p  >{{x.event_type_id.event_type}}</p></div>
+                    <div class="eventtitle" style=" font-size:24px; font-weight:600;"><p >{{ x.event_title}}</p></div>
+                      <div  class="venue" style="height:100px;" ><p>{{x.venue}} | 
+                        {{ x.event_start_date|date:"F j" }}{% if x.event_end_date %} - {{ x.event_end_date|date:"F j" }}{% endif %}</p></div>
+
                       </div>
-                     <div class="book d-flex ">
-                        <p class="price" style="font-size:20px"><i class="fa fa-inr mt-4 ms-4" aria-hidden="true">&nbsp;{{x.ticket_price}} Onwards</i></p>
-                        <button class="bookbutton ms-auto me-3 mt-3 mb-4">Book Now</button>
-                  </div>
+                    
+                    
                 </div>
               </div>
                {% endfor %}
             </div>
         </div></div>
+  
+<!-- Footer Section -->
+<footer class="footer mt-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-3">
+              <ul class="list-unstyled ggg mt-5">
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Categories</a></li>
+                  <li><a href="#">Create Events</a></li>
+                  <li><a href="#">Find Events</a></li>
+              </ul>
+          </div>
+          <div class="col-md-3" style="color: white;">
+            <ul class="list-unstyled mt-5">
+              
+              <li><a href="#"> Terms & Cnditions</a></li>
+              <li><a href="#">Privacy Policy </a></li>
+              <li><a href="">Customer Support</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+        </div>
+          <div class="col-md-3" style="color: white;">
+              <ul class="list-unstyled mt-5 ">
+                <li>Contact Us</li>
+                <li><a href="mailto:shamelashahnas@gmail.com?subject=Regarding%20Your%20Event">ehsaas@gmail.com</a></li>
+                <li><a href="tel:9526011865">9526011865</a></li>
+              </ul>
+          </div>
+          <div class="col-md-3" style="color: white;">
+            <ul class="list-unstyled mt-5 ">
+              <li>Connect With Us</li>
+              <a href="https://wa.me/15551234567" style="margin-right: 12px;">
+                <i class=" fa fab fa-whatsapp fa-lg"></i> </a>         
+              <a href="#" style="margin-right: 12px;"><i class="fa fab fa-facebook-f fa-lg"></i></a>
+              <a href="#" style="margin-right: 12px;"><i class=" fa fab fa-twitter fa-lg"></i></a>
+              <a href="https://www.instagram.com/sh_e_mi__" target="_blank">
+                <i class="fa fab fa-instagram fa-lg"></i> </a>
+             
+            </ul>
+        </div>
+</div>
+      </div>
+      <hr>
+      <div class="row" style="color: whitesmoke;">
+          <div class="col-md-12 text-center">
+              <p>&copy; 2024 Ehsaas. All rights reserved.</p>
+          </div>
+      </div>
+  </div>
+</footer>      
 
         <script>
 

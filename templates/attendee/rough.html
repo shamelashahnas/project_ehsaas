@@ -1,297 +1,161 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-  
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width,  
-                                   initial-scale=1.0"> 
-    <title>Document</title> 
-    <link rel="stylesheet" href="/style.css"> 
-    <script src="/script.js" defer></script> 
-    <link rel="stylesheet" href= 
-"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" /> 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet'>
+    <title>Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-<style>
-  * { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Times New Roman', Times, serif; 
-} 
-  
-body { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    min-height: 100vh; 
-    padding: 0 35px; 
-    background: rgb(228, 220, 220); 
-} 
-  
-.wrapper { 
-    max-width: 1100px; 
-    width: 100%; 
-    position: relative; 
-  
-} 
-  
-.wrapper i { 
-    height: 50px; 
-    width: 50px; 
-    background: rgb(118, 233, 118); 
-    text-align: center; 
-    line-height: 50px; 
-    border-radius: 50%; 
-    cursor: pointer; 
-    position: absolute; 
-    top: 50%; 
-    font-size: 1.25 rem; 
-    transform: translateY(-50%); 
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23); 
-  
-} 
-  
-.wrapper i:first-child { 
-    left: -22px; 
-  
-} 
-  
-.wrapper i:last-child { 
-    right: -22px; 
-  
-} 
-  
-.wrapper .carousel { 
-    display: grid; 
-    grid-auto-flow: column; 
-    grid-auto-columns: calc((100% / 3) - 12px); 
-    gap: 16px; 
-    overflow-x: auto; 
-    scroll-snap-type: x mandatory; 
-    scroll-behavior: smooth; 
-    scrollbar-width: 0; 
-} 
-  
-.carousel::-webkit-scrollbar { 
-    display: none; 
-} 
-  
-.carousel :where(.card, .img) { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-} 
-  
-.carousel.dragging { 
-    scroll-snap-type: none; 
-    scroll-behavior: auto; 
-} 
-  
-.carousel.no-transition { 
-    scroll-behavior: auto; 
-} 
-  
-.carousel.dragging .card { 
-    cursor: grab; 
-    user-select: none; 
-} 
-  
-.carousel .card { 
-    scroll-snap-align: start; 
-    height: 340px; 
-    list-style: none; 
-    background: #fff; 
-    border-radius: 8px; 
-    display: flex; 
-    cursor: pointer; 
-    width: 98%; 
-    padding-bottom: 15px; 
-    align-items: center; 
-    justify-content: center; 
-    flex-direction: column; 
-} 
-  
-.card .img { 
-    background: green; 
-    width: 145px; 
-    height: 145px; 
-    border-radius: 50%; 
-  
-} 
-  
-.card .img img { 
-    width: 140px; 
-    height: 140px; 
-    object-fit: cover; 
-    border-radius: 50%; 
-    border: 4px solid #fff; 
-} 
-  
-.card h2 { 
-    font-weight: 500; 
-    font-size: 1.56rem; 
-    margin: 30px 0 5px; 
-} 
-  
-.card span { 
-    color: #6a6d78; 
-    font-size: 1.31rem; 
-  
-} 
-  
-@media screen and (max-width: 900px) { 
-    .wrapper .carousel { 
-        grid-auto-columns: calc((100% / 2) - 9px); 
-  
-    } 
-} 
-  
-@media screen and (max-width: 600px) { 
-    .wrapper .carousel { 
-        grid-auto-columns: 100%; 
-  
-    } 
+    <style>
+  body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('{% static "images/signup.png" %}');
+    background-position-x: 19%;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
 }
-</style>
-</head> 
-  
-<body> 
-  
-    <div class="wrapper"> 
-        <i id="left" class="fa-solid  fas fa-angle-left"></i> 
-        <ul class="carousel"> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;"> 
-                      GeeksforGeeks 
-                  </h2> 
-                <span>Coding Platform</span> 
-            </li> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;">GeeksforGeeks</h2> 
-                <span>Coding Platform</span> 
-            </li> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;">GeeksforGeeks</h2> 
-                <span>Coding Platform</span> 
-            </li> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;">GeeksforGeeks</h2> 
-                <span>Coding Platform</span> 
-            </li> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;">GeeksforGeeks</h2> 
-                <span>Coding Platform</span> 
-            </li> 
-            <li class="card"> 
-                <div class="img"><img src= 
-"https://media.geeksforgeeks.org/wp-content/uploads/20240213150115/ppp.png" 
-                                      alt="" draggable="false"> </div> 
-                <h2 style="color: green; font-weight:bold;">GeeksforGeeks</h2> 
-                <span>Coding Platform</span> 
-            </li> 
-        </ul> 
-        <i id="right" class="fa-solid fas fa-angle-right"></i> 
-    </div> 
-  
+.logo {
+      color: rgb(90, 5, 5);
+      font-size: 40px;
+      text-decoration: none;
+      font-family:'Audiowide';
+}
 
+.form-2-wrapper {
+    background: #ff000029;
+    padding: 60px;
+    border-radius: 8px;
+}
+input.form-control{
+    padding: 16px;
+    border: none;
+    border: 2px solid #405c7cb8;
+    border-radius: 30px;
+    background-color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+   
+   
+}
+input.form-control:focus{
+    box-shadow: none !important;
+    outline: 0px !important;
+    background-color: transparent;
+}
+button.login-btn{
+    background: #940404;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+}
+.register-test a{
+    color: #000;
+}
+.social-login button{
+    border-radius: 30px;
+}
+.form-check-input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #405c7cb8;
+            background-color: rgba(231, 37, 37, 0.057);
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            margin-right: 10px;
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function() { 
-    const carousel = document.querySelector(".carousel"); 
-    const arrowBtns = document.querySelectorAll(".wrapper i"); 
-    const wrapper = document.querySelector(".wrapper"); 
+        }
+        .form-check-input[type="radio"]:checked {
+            background-color: #940404;
+            border-color: #940404;
+        }
+        .form-check-input[type="radio"]:checked::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 4px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .form-check-input[type="radio"]:hover {
+            background-color: #940404;
+            border-color: #940404;
+        }
+        .form-check-input[type="radio"]:hover::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 4px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .form-check-label{
+            font-size: 10px;
+        }
+
+    </style>
+</head>
+<body>
   
-    const firstCard = carousel.querySelector(".card"); 
-    const firstCardWidth = firstCard.offsetWidth; 
-  
-    let isDragging = false, 
-        startX, 
-        startScrollLeft, 
-        timeoutId; 
-  
-    const dragStart = (e) => {  
-        isDragging = true; 
-        carousel.classList.add("dragging"); 
-        startX = e.pageX; 
-        startScrollLeft = carousel.scrollLeft; 
-    }; 
-  
-    const dragging = (e) => { 
-        if (!isDragging) return; 
-      
-        // Calculate the new scroll position 
-        const newScrollLeft = startScrollLeft - (e.pageX - startX); 
-      
-        // Check if the new scroll position exceeds  
-        // the carousel boundaries 
-        if (newScrollLeft <= 0 || newScrollLeft >=  
-            carousel.scrollWidth - carousel.offsetWidth) { 
-              
-            // If so, prevent further dragging 
-            isDragging = false; 
-            return; 
-        } 
-      
-        // Otherwise, update the scroll position of the carousel 
-        carousel.scrollLeft = newScrollLeft; 
-    }; 
-  
-    const dragStop = () => { 
-        isDragging = false;  
-        carousel.classList.remove("dragging"); 
-    }; 
-  
-    const autoPlay = () => { 
-      
-        // Return if window is smaller than 800 
-        if (window.innerWidth < 800) return;  
-          
-        // Calculate the total width of all cards 
-        const totalCardWidth = carousel.scrollWidth; 
-          
-        // Calculate the maximum scroll position 
-        const maxScrollLeft = totalCardWidth - carousel.offsetWidth; 
-          
-        // If the carousel is at the end, stop autoplay 
-        if (carousel.scrollLeft >= maxScrollLeft) return; 
-          
-        // Autoplay the carousel after every 2500ms 
-        timeoutId = setTimeout(() =>  
-            carousel.scrollLeft += firstCardWidth, 2500); 
-    }; 
-  
-    carousel.addEventListener("mousedown", dragStart); 
-    carousel.addEventListener("mousemove", dragging); 
-    document.addEventListener("mouseup", dragStop); 
-    wrapper.addEventListener("mouseenter", () =>  
-        clearTimeout(timeoutId)); 
-    wrapper.addEventListener("mouseleave", autoPlay); 
-  
-    // Add event listeners for the arrow buttons to  
-    // scroll the carousel left and right 
-    arrowBtns.forEach(btn => { 
-        btn.addEventListener("click", () => { 
-            carousel.scrollLeft += btn.id === "left" ?  
-                -firstCardWidth : firstCardWidth; 
-        }); 
-    }); 
-}); 
-    </script>
-</body> 
-  
+<div class="container">
+  <div class="row">
+    <!-- Left Blank Side -->
+    <div class="col-lg-4"></div>
+
+    <!-- Right Side Form -->
+    <div class="col-lg-8 d-flex align-items-center justify-content-center right-side">
+      <div class="form-2-wrapper">
+        <div class="logo text-center">
+          <p class="logo ">Ehsaas</p>
+        </div>
+        <h4 class="text-center mb-4">Sign Up</h4>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="user_type" id="organiser" value="organiser">
+                    <label class="form-check-label" style="font-size: 20px;" for="organiser">Organiser</label>
+                </div>
+                <div class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="user_type" id="attendee" value="attendee">
+                    <label class="form-check-label" for="attendee">Attendee</label>
+                </div>
+            </div>
+          <div class="mb-3 form-box">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" required>
+          </div>
+          <div class="mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Your Password" required>
+          </div>
+
+         
+          <button type="submit" class="btn btn-outline-secondary login-btn w-100 mb-3">Sign Up</button>
+         
+        </form>
+
+        <!-- Register Link -->
+        <p class="text-center register-test mt-3">Already have an account? <a href="{% url 'login_page' %}" class="text-decoration-none">Sign In here</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
 </html>
