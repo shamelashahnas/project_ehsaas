@@ -75,32 +75,32 @@ WSGI_APPLICATION = 'Ehsaas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mainproject_ehsaas',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
-    }
-}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ehsaas_demodb',
+#         'NAME': 'mainproject_ehsaas',
 #         'USER': 'root',
-#         'PASSWORD': 'shemi123',
-#         'HOST': 'database-1.cvqueqm4kjee.ap-southeast-2.rds.amazonaws.com',
-#         'PORT': '3306',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': '',
 #         'OPTIONS': {
 #             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
 #         }
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ehsaas_demodb',
+        'USER': 'root',
+        'PASSWORD': 'shemi123',
+        'HOST': 'database-1.cvqueqm4kjee.ap-southeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+}
 
 
 
